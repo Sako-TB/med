@@ -343,7 +343,7 @@
     /* ── Print ── */
     .print-only { display: none; }
 
-    @page { size: A4; margin: 10mm; }
+    @page { size: letter; margin: 0; }
 
     @media print {
       .no-print { display: none !important; }
@@ -385,11 +385,16 @@
 
       .sheet {
         display: grid;
-        grid-template-columns: repeat(2, 2.83in);
-        gap: 3mm 5mm;
-        justify-content: flex-start;
+        grid-template-columns: repeat(3, 2.831in);
+        grid-auto-rows: 1.5701in;
+        gap: 0;
+        justify-content: center;
+        align-content: start;
       }
       .slabel-item { break-inside: avoid; page-break-inside: avoid; }
+      .slabel-item:nth-child(22) { break-before: page; page-break-before: always; }
+      .slabel { border-color: transparent; }
+      .print-header { display: none !important; }
 
       /* Single-label print mode */
       body.print-single .slabel-item { display: none; }
@@ -449,8 +454,6 @@
 
     <!-- ════════ TAB: SYRINGE LABELS ════════ -->
     <div class="tab-content active" id="tab-labels">
-      <div class="print-header print-only" id="printHeader"></div>
-
       <div class="card no-print">
         <div class="card-header">
           <div class="card-icon">
@@ -463,7 +466,7 @@
         <div class="legend" id="legend"></div>
 
         <div class="info-note">
-          Labels print at their exact size (2.83 &times; 1.57 in &asymp; 72 &times; 40 mm), 12 per A4 page on plain paper &mdash; cut along the borders. The number badge on each label matches the set order: 1&ndash;30 plus P1/P2 for the perfusion pair. Downloaded PNGs embed their true print size, so they drop into the Word template at exactly label size. All content keeps a &ge;4.5&thinsp;mm safe zone from every label edge, and exported PNGs drop the thin outline so nothing sits at the die-cut edge.
+          Printing this page lays the labels out exactly like the AP0820 sheet: <strong>US Letter</strong>, 3 &times; 7 &mdash; 21 per page, edge to edge (page 1: 1&ndash;21, page 2: 22&ndash;P2). In the print dialog choose <strong>US Letter</strong>, <strong>100% scale</strong>, and margins <strong>None</strong>. The number badge on each label matches the set order: 1&ndash;30 plus P1/P2 for the perfusion pair. Downloaded PNGs embed their true print size, so they drop into the Word template at exactly label size. All content keeps a &ge;4.5&thinsp;mm safe zone from every label edge, and exported PNGs drop the thin outline so nothing sits at the die-cut edge.
         </div>
 
         <div class="toolbar">
@@ -489,6 +492,7 @@
 
         <div class="sheet" id="sheet"></div>
       </div>
+    </div>
 
     <!-- ════════ TAB: BLANK TEMPLATE ════════ -->
     <div class="tab-content" id="tab-template">
@@ -878,7 +882,6 @@
   });
 
   /* ── Init ── */
-  $('printHeader').innerHTML = `Medication Syringe Labels<span class="print-subtitle">${LABELS.length} labels \u2014 full set</span><span class="print-date">${todayStr()}</span>`;
   buildLegend();
   buildSheet();
 </script>
